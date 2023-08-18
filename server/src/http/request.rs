@@ -4,17 +4,17 @@ use std::error::Error;
 use std::fmt::{Display, Debug, Formatter, Result as FmtResult};
 use std::str::{from_utf8, Utf8Error};
 
-pub struct Request<'buffer> {
-	path: &'buffer str,
-	query_string: Option<&'buffer str>,
+pub struct Request<'buf> {
+	path: &'buf str,
+	query_string: Option<&'buf str>,
 	method: Method,
 }
 
-impl<'buffer> TryFrom<&'buffer [u8]> for Request<'buffer> {
+impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
 
 	type Error = ParseError;
 
-	fn try_from(buffer: &'buffer[u8]) -> Result<Self, Self::Error>{
+	fn try_from(buffer: &'buf[u8]) -> Result<Self, Self::Error>{
 		// match from_utf8(buffer) {
 		// 	Ok(request) => request,
 		// 	Err(_) => return Err(ParseError::InvalidEncoding),
