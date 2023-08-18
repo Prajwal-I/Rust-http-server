@@ -3,10 +3,11 @@ use std::convert::{TryFrom, From};
 use std::error::Error;
 use std::fmt::{Display, Debug, Formatter, Result as FmtResult};
 use std::str::{from_utf8, Utf8Error};
+use super::QueryString;
 
 pub struct Request<'buf> {
 	path: &'buf str,
-	query_string: Option<&'buf str>,
+	query_string: Option<QueryString<'buf>>,
 	method: Method,
 }
 
@@ -49,7 +50,7 @@ impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
 		//Below is if let, simplified syntax for above
 		//omit None block
 		if let Some(i) = path.find('?') {
-			query_string = Some(&path[i+1..]);
+			query_string = Some(QueryString::from(&path[i+1..]));
 			path = &path[..i];
 		}
 
