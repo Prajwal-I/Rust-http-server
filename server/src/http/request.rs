@@ -5,6 +5,7 @@ use std::fmt::{Display, Debug, Formatter, Result as FmtResult};
 use std::str::{from_utf8, Utf8Error};
 use super::QueryString;
 
+#[derive(Debug)]
 pub struct Request<'buf> {
 	path: &'buf str,
 	query_string: Option<QueryString<'buf>>,
@@ -70,7 +71,7 @@ fn get_next_word(request: &str) -> Option<(&str, &str)> {
 			return Some((&request[..i], &request[i+1..]));
 		}
 	}
-	unimplemented!()
+	None
 }
 
 pub enum ParseError {

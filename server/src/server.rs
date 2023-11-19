@@ -20,7 +20,7 @@ impl Server {
 		loop {
 			match listener.accept() {
 				Ok((mut stream, client_addr)) => {
-					println!("Established connection with {}", client_addr);
+					//println!("Established connection with {}", client_addr);
 					let mut buffer = [0; 1024];
 					println!("buffer size - {}",buffer.len());
 
@@ -28,7 +28,10 @@ impl Server {
 						Ok(_) => {
 							println!("Recieved request - \n{}", String::from_utf8_lossy(&buffer));
 							match Request::try_from(&buffer[..]) {
-								Ok(request) => {},
+								Ok(request) => {
+									dbg!(request);
+									write!(stream, "{}", "HTTP/1.1 404 Not Found \r\n\r\n");
+								},
 								Err(e) => println!("Failed to parse request - {}", e),
 							}
 						},
